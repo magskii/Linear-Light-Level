@@ -1,0 +1,16 @@
+clear all;
+
+% function lumLevel = convertLum(lumInput)
+
+load('lumLevels');
+
+fitobject = fit(stepVect(:,2),stepVect(:,2),'cubicinterp');
+
+% put in luminance, get out greyscale
+
+lumInput = 50;
+
+
+% lumOutput = feval(fitobject,cdm);
+
+% end
