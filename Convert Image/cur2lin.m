@@ -12,9 +12,6 @@
 %   luminance. E.g. if you want mid-grey (128), it works out mid-grey in
 %   terms of measured cd/m2, then converts back to a 0-255 scale.
 
-% clear all;
-% curLum = [0:255];
-% curLum = 128;
 
 function linLum = cur2lin(curLum)
 
