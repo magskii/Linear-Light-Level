@@ -1,4 +1,4 @@
-% Takes 'desired' linear luminance (e.g. 0-255), compares to measured
+% Takes 'desired' linear luminance matrix (e.g. 0-255), compares to measured
 % screen luminance curve, and outputs actual linear luminance you need to
 % input.
 
@@ -12,23 +12,32 @@
 %   luminance. E.g. if you want mid-grey (128), it works out mid-grey in
 %   terms of measured cd/m2, then converts back to a 0-255 scale.
 
+% clear all;
+% curLum = [0:255];
+% curLum = 128;
 
 function linLum = cur2lin(curLum)
 
 load('lumLevels');
 
+
 % fit curve to input luminance (y) and measured luminance (x)
-fitobject = fit(stepVect(:,2),stepVect(:,1),'cubicinterp');
+fitobject = fit(stepVect(:,2),stepVect(:,1),'smoothingspline');
 
 % convert to percentages
-curLum = curLum/((stepVect(length(stepVect),1)-stepVect(1,1)+1)/100); % turn curLum into a percentage
-cdm = ((stepVect(length(stepVect),2)-stepVect(1,2))*(curLum/100))+stepVect(1,2); % get that percentage in terms of cd/m2
+curDiff = stepVect(length(stepVect),1)-stepVect(1,1);
+cdmDiff = stepVect(length(stepVect),2)-stepVect(1,2);
+curLum = curLum/curDiff; % turn curLum into a percentage
+cdm = (cdmDiff*curLum)+stepVect(1,2); % get that percentage in terms of cd/m2
 
-% NOTE TO SELF: UPDATE ABOVE TWO LINES TO REFLECT DECIMAL POINTS. WITH +1 IN
-% CURLUM LINE, IT'S ONLY +1 BECAUSE I KNOW I'M WORKING WITH WHOLE NUMBERS.
-% SHOULD REFLECT NUMBER OF DECIMAL PLACES FOR BETTER ACCURACY.
 
 % get output
-linLum = feval(fitobject,cdm); % read off corresponding linear luminance value
+for i = 1:length(curLum)
+    
+    linLum(:,i) = feval(fitobject,cdm(:,i)); % read off corresponding linear luminance value
+
+end
+
+linLum = round(linLum);
 
 end
