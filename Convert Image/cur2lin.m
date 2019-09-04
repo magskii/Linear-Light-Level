@@ -1,4 +1,4 @@
-% Takes 'desired' linear luminance matrix (e.g. 0-255), compares to measured
+% Takes 'desired' linear luminance matrix (or vector / single value) (e.g. 0-255), compares to measured
 % screen luminance curve, and outputs actual linear luminance you need to
 % input.
 
@@ -12,11 +12,14 @@
 %   luminance. E.g. if you want mid-grey (128), it works out mid-grey in
 %   terms of measured cd/m2, then converts back to a 0-255 scale.
 
+%load('test');
+%curLum = imageLum;
 
 function linLum = cur2lin(curLum)
 
 load('lumLevels');
 
+curLum = double(curLum); % in case image files in wrong format for feval
 
 % fit curve to input luminance (y) and measured luminance (x)
 fitobject = fit(stepVect(:,2),stepVect(:,1),'smoothingspline');
