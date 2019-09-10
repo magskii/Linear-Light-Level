@@ -12,7 +12,7 @@ clear all;
 
 
 % luminance steps
-desSteps = 10; % desired number of steps
+desSteps = 5; % desired number of steps
 dark = 0;
 light = 255;
 
@@ -55,6 +55,7 @@ for i = 1:nSteps
     if isempty(parAns)
         parAns = num2str(0);
     end
+    
     
     stepVect(2,i) = str2num(parAns);
     
